@@ -12,21 +12,6 @@ An interactive 3D visualization of the highest-grossing films (1997–2025) pres
 
 Visit the live application: [https://iandlama.github.io/movie-universe-3d/](https://iandlama.github.io/movie-universe-3d/)
 
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Data Pipeline](#data-pipeline)
-- [Technologies Used](#technologies-used)
-- [Installation](#installation)
-- [Usage Guide](#usage-guide)
-- [Project Structure](#project-structure)
-- [Data Schema](#data-schema)
-- [Deployment](#deployment)
-- [Acknowledgments](#acknowledgments)
-
-
----
 
 ## 🎯 Overview
 
