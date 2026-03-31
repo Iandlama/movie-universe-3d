@@ -2,7 +2,6 @@
 Movie Universe 3D — Interactive 3D visualization of the highest-grossing films presented as a galaxy. Explore movie data (1997–2025) through stars: hover for titles, double-click for details, compare films. Rotate the galaxy with your mouse, use the timeline to travel through years. 🎬🌌
 
 
-```markdown
 # 🎬 Cinema Galaxy - 3D Interactive Film Timeline
 
 An interactive 3D visualization of the highest-grossing films (1997–2025) presented as a star galaxy. Explore film data through an immersive 3D space, compare box office earnings, and travel through cinematic history with an interactive timeline.
