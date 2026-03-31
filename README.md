@@ -104,7 +104,7 @@ Wikipedia → Web Scraping → CSV → SQLite → JSON → 3D Visualization
 |------------|---------|
 | **HTML5** | Page structure |
 | **CSS3** | Styling with glassmorphism effects |
-| **JavaScript (ES6+)** | Dynamic interactions |
+| **JavaScript** | Dynamic interactions |
 | **Three.js** | 3D rendering |
 | **Chart.js** | Comparison bar charts |
 | **Fetch API** | JSON data loading |
