@@ -1,4 +1,3 @@
-
 // DATA & GLOBALS
 let filmsData = [];
 let filmStars = [];
@@ -159,14 +158,14 @@ function updateComparisonUI() {
     }
 
     listDiv.innerHTML = comparisonFilms.map((film, idx) => `
-                <div class="comparison-film-item">
-                    <div class="comparison-film-info">
-                        <div class="comparison-film-title">${film.title}</div>
-                        <div class="comparison-film-year">${film.year} · ${formatMoney(film.box_office)}</div>
-                    </div>
-                    <button class="remove-film" data-idx="${idx}">✕</button>
-                </div>
-            `).join('');
+        <div class="comparison-film-item">
+            <div class="comparison-film-info">
+                <div class="comparison-film-title">${film.title}</div>
+                <div class="comparison-film-year">${film.year} · ${formatMoney(film.box_office)}</div>
+            </div>
+            <button class="remove-film" data-idx="${idx}">✕</button>
+        </div>
+    `).join('');
 
     document.querySelectorAll('.remove-film').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -234,7 +233,7 @@ function updateComparisonChart() {
     }
 }
 
-// MODAL with ADD button - FIXED: always closes and reopens to ensure it works on repeated clicks
+// MODAL with ADD button
 function showModal(film) {
     const modal = document.getElementById('filmModal');
 
@@ -276,43 +275,6 @@ function showModal(film) {
             document.addEventListener('click', closeModalHandler);
         }, 100);
     }, 50);
-}
-
-function openModalWithFilm(film) {
-    const modal = document.getElementById('filmModal');
-    currentModalFilm = film;
-    document.getElementById('modalTitle').innerHTML = `🎬 ${film.title}`;
-    document.getElementById('modalYear').innerText = film.year;
-    document.getElementById('modalDirector').innerText = film.director;
-    document.getElementById('modalBoxOffice').innerText = formatMoney(film.box_office);
-    document.getElementById('modalCountry').innerText = film.countries.join(', ');
-    document.getElementById('modalProduction').innerText = film.production || 'N/A';
-    modal.classList.add('active');
-
-    // Update add button to use current film
-    const addBtn = document.getElementById('modalAddBtn');
-    const newAddBtn = addBtn.cloneNode(true);
-    addBtn.parentNode.replaceChild(newAddBtn, addBtn);
-    newAddBtn.onclick = () => {
-        addToComparison(film);
-        modal.classList.remove('active');
-    };
-
-    const closeBtn = document.getElementById('closeModalBtn');
-    const newCloseBtn = closeBtn.cloneNode(true);
-    closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
-    newCloseBtn.onclick = () => modal.classList.remove('active');
-
-    // Close on outside click
-    const closeModalHandler = (e) => {
-        if (!modal.contains(e.target)) {
-            modal.classList.remove('active');
-            document.removeEventListener('click', closeModalHandler);
-        }
-    };
-    setTimeout(() => {
-        document.addEventListener('click', closeModalHandler);
-    }, 100);
 }
 
 // Show tooltip on hover
@@ -372,14 +334,6 @@ function init3D() {
     raycaster = new THREE.Raycaster();
     mouseVector = new THREE.Vector2();
 
-
-
-
-
-
-
-
-
     // HOVER handler - show tooltip on mouse move
     renderer.domElement.addEventListener('mousemove', (event) => {
         const rect = renderer.domElement.getBoundingClientRect();
@@ -387,7 +341,6 @@ function init3D() {
         mouseVector.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
         raycaster.setFromCamera(mouseVector, camera);
 
-        // ФИЛЬТРУЕМ ТОЛЬКО ВИДИМЫЕ ЗВЕЗДЫ
         const visibleStars = filmStars.filter(star => star.mesh.visible === true);
         const intersects = raycaster.intersectObjects(visibleStars.map(s => s.mesh));
 
@@ -418,7 +371,6 @@ function init3D() {
             const film = intersects[0].object.userData.film;
             if (film) {
                 showModal(film);
-                // Visual feedback
                 intersects[0].object.material.emissiveIntensity = 1.2;
                 setTimeout(() => {
                     if (intersects[0]) intersects[0].object.material.emissiveIntensity = 0.4;
@@ -464,19 +416,31 @@ function generateStars() {
 }
 
 function updateByYear(year) { filmStars.forEach(star => { star.mesh.visible = star.film.year <= year; }); updateStats(year); updateNowPlaying(year); }
-function updateStats(year) { const filtered = filmsData.filter(f => f.year <= year); const total = filtered.length; let top = null, sum = 0; filtered.forEach(f => { sum += f.box_office; if (!top || f.box_office > top.box_office) top = f; }); document.getElementById('totalFilms').innerText = total; document.getElementById('topFilm').innerText = top ? top.title : '—'; document.getElementById('totalBoxOffice').innerText = formatMoney(sum); }
+
+function updateStats(year) {
+    const filtered = filmsData.filter(f => f.year <= year);
+    const total = filtered.length;
+    let top = null, sum = 0;
+    filtered.forEach(f => {
+        sum += f.box_office;
+        if (!top || f.box_office > top.box_office) top = f;
+    });
+    document.getElementById('totalFilms').innerText = total;
+    document.getElementById('topFilm').innerText = top ? top.title : '—';
+    document.getElementById('totalBoxOffice').innerText = formatMoney(sum);
+}
+
 function updateNowPlaying(year) {
     const films = filmsData.filter(f => f.year === year);
     document.getElementById('nowPlayingYear').innerText = year;
     document.getElementById('nowPlayingList').innerHTML = films.map(f => `
-                <div class="now-playing-item" onclick="showModalFromTitle('${f.title.replace(/'/g, "\\'")}')">
-                    <div style="font-weight:600;">🎬 ${f.title}</div>
-                    <div style="font-size:0.7rem; color:#ffaa44;">💰 ${formatMoney(f.box_office)}</div>
-                </div>
-            `).join('') || '<div style="color:#aaa;">No films this year</div>';
+        <div class="now-playing-item" onclick="showModalFromTitle('${f.title.replace(/'/g, "\\'")}')">
+            <div style="font-weight:600;">🎬 ${f.title}</div>
+            <div style="font-size:0.7rem; color:#ffaa44;">💰 ${formatMoney(f.box_office)}</div>
+        </div>
+    `).join('') || '<div style="color:#aaa;">No films this year</div>';
 }
 
-// Function to show modal from now-playing click - FIXED: uses the fixed showModal function
 window.showModalFromTitle = function (title) {
     const film = filmsData.find(f => f.title === title);
     if (film) {
@@ -484,22 +448,83 @@ window.showModalFromTitle = function (title) {
     }
 };
 
-function setYear(year) { year = Math.min(MAX_YEAR, Math.max(MIN_YEAR, year)); currentYear = year; document.getElementById('currentYear').innerText = year; document.getElementById('yearSlider').value = year; const percent = ((year - MIN_YEAR) / (MAX_YEAR - MIN_YEAR)) * 100; document.getElementById('timelineProgress').style.width = `${percent}%`; updateByYear(year); }
+function setYear(year) {
+    year = Math.min(MAX_YEAR, Math.max(MIN_YEAR, year));
+    currentYear = year;
+    document.getElementById('currentYear').innerText = year;
+    document.getElementById('yearSlider').value = year;
+    const percent = ((year - MIN_YEAR) / (MAX_YEAR - MIN_YEAR)) * 100;
+    document.getElementById('timelineProgress').style.width = `${percent}%`;
+    updateByYear(year);
+}
 
 function initUI() {
     const slider = document.getElementById('yearSlider');
     slider.addEventListener('input', (e) => setYear(parseInt(e.target.value)));
-    document.getElementById('playBtn').onclick = () => { if (animationInterval) clearInterval(animationInterval); animationInterval = setInterval(() => { if (currentYear < MAX_YEAR) setYear(currentYear + 1); else clearInterval(animationInterval); }, 400); };
+
+    document.getElementById('playBtn').onclick = () => {
+        if (animationInterval) clearInterval(animationInterval);
+        animationInterval = setInterval(() => {
+            if (currentYear < MAX_YEAR) setYear(currentYear + 1);
+            else clearInterval(animationInterval);
+        }, 400);
+    };
+
     document.getElementById('resetBtn').onclick = () => setYear(MIN_YEAR);
-    document.getElementById('resetViewBtn').onclick = () => { camera.position.set(defaultCameraPos.x, defaultCameraPos.y, defaultCameraPos.z); targetRotationX = targetRotationY = targetRotationZ = 0; starGroup.rotation.set(0, 0, 0); showMsg('Camera reset'); };
+
+    document.getElementById('resetViewBtn').onclick = () => {
+        camera.position.set(defaultCameraPos.x, defaultCameraPos.y, defaultCameraPos.z);
+        targetRotationX = targetRotationY = targetRotationZ = 0;
+        starGroup.rotation.set(0, 0, 0);
+        showMsg('Camera reset');
+    };
+
     document.getElementById('clearCompareBtn').onclick = () => clearComparison();
+
+    // SORTING BUTTONS
+    document.getElementById('sortByYearBtn').onclick = () => {
+        filmsData.sort((a, b) => a.year - b.year);
+        generateStars();
+        updateByYear(currentYear);
+        showMsg('📅 Sorted by year');
+    };
+
+    document.getElementById('sortByBoxOfficeBtn').onclick = () => {
+        filmsData.sort((a, b) => b.box_office - a.box_office);
+        generateStars();
+        updateByYear(currentYear);
+        showMsg('💰 Sorted by box office');
+    };
 
     // Search
     const searchInput = document.getElementById('searchInput');
     const searchResult = document.getElementById('searchResult');
-    searchInput.addEventListener('input', () => { const q = searchInput.value.toLowerCase(); if (q.length < 2) { searchResult.classList.remove('active'); return; } const matches = filmsData.filter(f => f.title.toLowerCase().includes(q)).slice(0, 6); if (matches.length) { searchResult.innerHTML = matches.map(f => `<div class="search-result-item" onclick="showModalFromTitle('${f.title.replace(/'/g, "\\'")}')">🎬 ${f.title} (${f.year})</div>`).join(''); searchResult.classList.add('active'); } else searchResult.classList.remove('active'); });
-    document.getElementById('searchBtn').onclick = () => { const match = filmsData.find(f => f.title.toLowerCase().includes(searchInput.value.toLowerCase())); if (match) showModalFromTitle(match.title); else showMsg('Film not found'); };
-    document.addEventListener('click', (e) => { if (!searchInput.contains(e.target)) searchResult.classList.remove('active'); });
+
+    searchInput.addEventListener('input', () => {
+        const q = searchInput.value.toLowerCase();
+        if (q.length < 2) {
+            searchResult.classList.remove('active');
+            return;
+        }
+        const matches = filmsData.filter(f => f.title.toLowerCase().includes(q)).slice(0, 6);
+        if (matches.length) {
+            searchResult.innerHTML = matches.map(f => `<div class="search-result-item" onclick="showModalFromTitle('${f.title.replace(/'/g, "\\'")}')">🎬 ${f.title} (${f.year})</div>`).join('');
+            searchResult.classList.add('active');
+        } else {
+            searchResult.classList.remove('active');
+        }
+    });
+
+    document.getElementById('searchBtn').onclick = () => {
+        const match = filmsData.find(f => f.title.toLowerCase().includes(searchInput.value.toLowerCase()));
+        if (match) showModalFromTitle(match.title);
+        else showMsg('Film not found');
+    };
+
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target)) searchResult.classList.remove('active');
+    });
+
     setYear(2025);
 }
 
