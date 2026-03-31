@@ -256,4 +256,4 @@ The site is hosted on **GitHub Pages**:
 ---
 
 **Enjoy exploring the Cinema Galaxy! 🌟🎬**
-```
+
