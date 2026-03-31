@@ -12,21 +12,19 @@ An interactive 3D visualization of the highest-grossing films (1997–2025) pres
 
 Visit the live application: [https://iandlama.github.io/movie-universe-3d/](https://iandlama.github.io/movie-universe-3d/)
 
----
-
 ## 📋 Table of Contents
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Data Pipeline](#-data-pipeline)
-- [Technologies Used](#-technologies-used)
-- [Installation](#-installation)
-- [Usage Guide](#-usage-guide)
-- [Project Structure](#-project-structure)
-- [Data Schema](#-data-schema)
-- [Deployment](#-deployment)
-- [Future Improvements](#-future-improvements)
-- [License](#-license)
+- [Overview](#overview)
+- [Features](#features)
+- [Data Pipeline](#data-pipeline)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Usage Guide](#usage-guide)
+- [Project Structure](#project-structure)
+- [Data Schema](#data-schema)
+- [Deployment](#deployment)
+- [Acknowledgments](#acknowledgments)
+
 
 ---
 
@@ -260,30 +258,8 @@ The site is hosted on **GitHub Pages**:
 
 ---
 
-## 🔮 Future Improvements
 
-- [ ] Add sorting buttons (by year, box office, title)
-- [ ] Include more films (expand beyond top 50)
-- [ ] Add film genres and ratings
-- [ ] Implement film filtering by country/director
-- [ ] Add audio effects for star interaction
-- [ ] Mobile-optimized controls
-- [ ] Dark/light theme toggle
-- [ ] Export comparison data as CSV
 
----
-
-## 📝 License
-
-This project is created for educational purposes as part of a data visualization assignment.
-
----
-
-## 👩‍💻 Author
-
-**Iandlama** – Data Science Portfolio Project
-
----
 
 ## 🙏 Acknowledgments
 
@@ -292,11 +268,7 @@ This project is created for educational purposes as part of a data visualization
 - Charts: [Chart.js](https://www.chartjs.org/)
 - Fonts: [Google Fonts - Inter](https://fonts.google.com/specimen/Inter)
 
----
 
-## 📧 Contact
-
-For questions or suggestions, please open an issue on GitHub.
 
 ---
 
