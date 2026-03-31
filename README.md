@@ -6,7 +6,7 @@ Movie Universe 3D — Interactive 3D visualization of the highest-grossing films
 
 An interactive 3D visualization of the highest-grossing films (1997–2025) presented as a star galaxy. Explore film data through an immersive 3D space, compare box office earnings, and travel through cinematic history with an interactive timeline.
 
-![Cinema Galaxy Screenshot](https://iandlama.github.io/movie-universe-3d/screenshot.png)
+
 
 ## 🌟 Live Demo
 
