@@ -1,13 +1,11 @@
-// DATA & GLOBALS
 let filmsData = [];
+let originalFilmsData = [];
 let filmStars = [];
 let currentYear = 2025;
 let animationInterval = null;
 
-// Comparison state (max 50)
 let comparisonFilms = [];
 
-// THREE.JS
 let scene, camera, renderer, starGroup;
 let raycaster, mouseVector;
 let isDragging = false;
@@ -18,7 +16,6 @@ let autoRotateSpeed = 0.002;
 let tooltip = null;
 let hoverTimeout = null;
 
-// Current selected film for modal
 let currentModalFilm = null;
 
 const MIN_YEAR = 1997;
@@ -27,7 +24,6 @@ const defaultCameraPos = { x: 0, y: 20, z: 160 };
 
 let comparisonChart = null;
 
-// LOAD DATA
 async function loadData() {
     try {
         const response = await fetch('films.json');
@@ -69,6 +65,9 @@ function processData(data) {
         countries: f.country ? f.country.split(/[;,]/).map(c => c.trim()) : ['Unknown'],
         production: f.production_companies || f.production || 'N/A'
     }));
+
+    originalFilmsData = [...filmsData];
+
     document.getElementById('loading').style.display = 'none';
     init3D();
     initUI();
@@ -98,7 +97,6 @@ function getColor(bo) {
     return 0xff4444;
 }
 
-// Show comparison panel when first film added
 function showComparisonPanel() {
     const panel = document.getElementById('comparisonPanel');
     if (!panel.classList.contains('visible')) {
@@ -107,7 +105,6 @@ function showComparisonPanel() {
     }
 }
 
-// Comparison Functions
 function addToComparison(film) {
     if (comparisonFilms.length >= 50) {
         showMsg('❌ Maximum 50 films in comparison!');
@@ -233,7 +230,6 @@ function updateComparisonChart() {
     }
 }
 
-// MODAL with ADD button
 function showModal(film) {
     const modal = document.getElementById('filmModal');
 
@@ -277,7 +273,6 @@ function showModal(film) {
     }, 50);
 }
 
-// Show tooltip on hover
 function showTooltip(event, film) {
     if (tooltip) {
         tooltip.style.display = 'block';
@@ -301,7 +296,6 @@ function hideTooltip() {
     }
 }
 
-// 3D INIT with hover and double-click
 function init3D() {
     const container = document.getElementById('galaxy-container');
     container.innerHTML = '';
@@ -314,7 +308,6 @@ function init3D() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
 
-    // Stars background
     const starGeo = new THREE.BufferGeometry();
     const starsPos = [];
     for (let i = 0; i < 2000; i++) { starsPos.push((Math.random() - 0.5) * 1000, (Math.random() - 0.5) * 600, (Math.random() - 0.5) * 500 - 200); }
@@ -334,7 +327,6 @@ function init3D() {
     raycaster = new THREE.Raycaster();
     mouseVector = new THREE.Vector2();
 
-    // HOVER handler - show tooltip on mouse move
     renderer.domElement.addEventListener('mousemove', (event) => {
         const rect = renderer.domElement.getBoundingClientRect();
         mouseVector.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
@@ -360,7 +352,6 @@ function init3D() {
         }
     });
 
-    // Double-click handler for film info
     renderer.domElement.addEventListener('dblclick', (event) => {
         const rect = renderer.domElement.getBoundingClientRect();
         mouseVector.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
@@ -396,13 +387,61 @@ function init3D() {
 function generateStars() {
     while (starGroup.children.length) starGroup.remove(starGroup.children[0]);
     filmStars = [];
+
+    let sortType = 'original';
+
+    if (filmsData.length > 1) {
+        let isYearSorted = true;
+        for (let i = 1; i < Math.min(filmsData.length, 10); i++) {
+            if (filmsData[i].year < filmsData[i - 1].year) {
+                isYearSorted = false;
+                break;
+            }
+        }
+
+        let isBoxOfficeSorted = true;
+        for (let i = 1; i < Math.min(filmsData.length, 10); i++) {
+            if (filmsData[i].box_office > filmsData[i - 1].box_office) {
+                isBoxOfficeSorted = false;
+                break;
+            }
+        }
+
+        if (isYearSorted) {
+            sortType = 'year';
+        } else if (isBoxOfficeSorted) {
+            sortType = 'boxoffice';
+        }
+    }
+
     filmsData.forEach((film, idx) => {
-        const t = (film.year - MIN_YEAR) / (MAX_YEAR - MIN_YEAR);
-        const radius = 30 + t * 60;
+        let t;
+        let radius;
+
+        if (sortType === 'year') {
+            t = (film.year - MIN_YEAR) / (MAX_YEAR - MIN_YEAR);
+            radius = 30 + t * 100;
+        } else if (sortType === 'boxoffice') {
+            const maxBO = Math.max(...filmsData.map(f => f.box_office));
+            const minBO = Math.min(...filmsData.map(f => f.box_office));
+            if (maxBO === minBO) {
+                t = 0;
+            } else {
+                t = (film.box_office - minBO) / (maxBO - minBO);
+                t = 1 - t;
+            }
+            radius = 30 + t * 40;
+        } else {
+            t = idx / filmsData.length;
+            radius = 30 + t * 40;
+        }
+
         const angle = t * Math.PI * 5.5 + idx * 0.02;
+
         const x = Math.cos(angle) * radius;
         const z = Math.sin(angle) * radius;
         const y = Math.sin(angle * 2) * 3 + (Math.random() - 0.5) * 2;
+
         const size = 0.5 + Math.min(film.box_office / 2500000000, 0.7);
         const color = getColor(film.box_office);
         const geometry = new THREE.SphereGeometry(size, 32, 32);
@@ -476,12 +515,16 @@ function initUI() {
         camera.position.set(defaultCameraPos.x, defaultCameraPos.y, defaultCameraPos.z);
         targetRotationX = targetRotationY = targetRotationZ = 0;
         starGroup.rotation.set(0, 0, 0);
-        showMsg('Camera reset');
+
+        filmsData = [...originalFilmsData];
+        generateStars();
+        updateByYear(currentYear);
+
+        showMsg('🎥 Camera reset + restored original order');
     };
 
     document.getElementById('clearCompareBtn').onclick = () => clearComparison();
 
-    // SORTING BUTTONS
     document.getElementById('sortByYearBtn').onclick = () => {
         filmsData.sort((a, b) => a.year - b.year);
         generateStars();
@@ -496,7 +539,6 @@ function initUI() {
         showMsg('💰 Sorted by box office');
     };
 
-    // Search
     const searchInput = document.getElementById('searchInput');
     const searchResult = document.getElementById('searchResult');
 
