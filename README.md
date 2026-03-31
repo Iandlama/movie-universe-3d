@@ -6,6 +6,8 @@ An interactive 3D visualization of the highest-grossing films (1997–2025) pres
 ## 🌟 Live Demo
 
 Visit the live application: [https://iandlama.github.io/movie-universe-3d/](https://iandlama.github.io/movie-universe-3d/)
+<img width="795" height="692" alt="image" src="https://github.com/user-attachments/assets/3f939505-497d-4bbf-a7b0-25b69c006545" />
+
 
 ---
 
