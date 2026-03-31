@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Cinema Galaxy - 3D Timeline with Film Comparison</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>✨ CINEMA GALAXY ✨</h1>
+        <p>1997-2025 • 🖱️ Hover for title | Double-click for details | Add to comparison</p>
+    </div>
+
+    <div class="stats-panel">
+        <h3>🌟 Current Stats</h3>
+        <div class="stat-item"><span>🎬 Films:</span><span id="totalFilms">0</span></div>
+        <div class="stat-item"><span>🏆 Top Film:</span><span id="topFilm">—</span></div>
+        <div class="stat-item"><span>💰 Box Office:</span><span id="totalBoxOffice">$0</span></div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="🔍 Search film...">
+        <button id="searchBtn">Find</button>
+        <div id="searchResult" class="search-result"></div>
+    </div>
+
+    <div class="now-playing">
+        <h4>🎬 NOW PLAYING <span id="nowPlayingYear">2025</span></h4>
+        <div id="nowPlayingList"></div>
+    </div>
+
+    <div class="timeline-container">
+        <div class="timeline-controls">
+            <button id="playBtn" class="timeline-btn">▶ PLAY</button>
+            <button id="resetBtn" class="timeline-btn">⟳ RESET</button>
+            <button id="resetViewBtn" class="timeline-btn"
+                style="background: linear-gradient(135deg, #44aaff, #2288cc);">🎥 Reset View</button>
+            <div class="year-range">
+                <span>1997</span>
+                <input type="range" id="yearSlider" min="1997" max="2025" step="1" value="2025">
+                <span>2025</span>
+            </div>
+            <div class="current-year" id="currentYear">2025</div>
+        </div>
+        <div class="timeline-track">
+            <div class="year-markers" id="yearMarkers"></div>
+            <div class="timeline-progress" id="timelineProgress"></div>
+        </div>
+    </div>
+
+    <div id="galaxy-container"></div>
+
+    <!-- COMPARISON PANEL - HIDDEN INITIALLY -->
+    <div class="comparison-panel" id="comparisonPanel">
+        <div class="comparison-header">
+            <h3>📊 COMPARE FILMS <span class="comparison-counter" id="compareCount">0</span><span
+                    style="font-size:0.7rem;">/50</span></h3>
+            <button class="clear-comparison" id="clearCompareBtn">Clear All</button>
+        </div>
+        <div class="comparison-list" id="comparisonList">
+            <div style="text-align:center; padding:20px; opacity:0.6;">✨ Add films to start comparison</div>
+        </div>
+        <div class="comparison-chart-container" id="chartContainer">
+            <canvas id="comparisonChart" width="400" height="250" style="width:100%; height:auto;"></canvas>
+        </div>
+    </div>
+
+    <div class="film-modal" id="filmModal">
+        <button class="close-modal" id="closeModalBtn">×</button>
+        <h3 id="modalTitle">🎬 Film</h3>
+        <div class="film-detail"><span>📅 Year:</span><span id="modalYear">—</span></div>
+        <div class="film-detail"><span>🎭 Director:</span><span id="modalDirector">—</span></div>
+        <div class="film-detail"><span>💰 Box Office:</span><span id="modalBoxOffice">—</span></div>
+        <div class="film-detail"><span>🌍 Country:</span><span id="modalCountry">—</span></div>
+        <div class="film-detail"><span>🏭 Production:</span><span id="modalProduction">—</span></div>
+        <button class="add-to-compare-btn" id="modalAddBtn">➕ ADD TO COMPARISON</button>
+    </div>
+
+    <div class="legend">
+        <div><span class="legend-color" style="background:#ffd700;"></span> > $2B</div>
+        <div><span class="legend-color" style="background:#ffaa44;"></span> $1.5-2B</div>
+        <div><span class="legend-color" style="background:#ff8844;"></span> $1-1.5B</div>
+        <div><span class="legend-color" style="background:#ff6644;"></span> $0.5-1B</div>
+        <div><span class="legend-color" style="background:#ff4444;"></span>
+            < $0.5B</div>
+                <div style="margin-top:5px;">✨ Hover for title | Double-click for details</div>
+        </div>
+
+        <div id="loading" class="loading">Loading films...</div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <script src="script.js"></script>
+</body>
+
+</html>
