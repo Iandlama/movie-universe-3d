@@ -1,15 +1,13 @@
 
-
 # 🎬 Cinema Galaxy - 3D Interactive Film Timeline
 
 An interactive 3D visualization of the highest-grossing films (1997–2025) presented as a star galaxy. Explore film data through an immersive 3D space, compare box office earnings, and travel through cinematic history with an interactive timeline.
-
-
 
 ## 🌟 Live Demo
 
 Visit the live application: [https://iandlama.github.io/movie-universe-3d/](https://iandlama.github.io/movie-universe-3d/)
 
+---
 
 ## 🎯 Overview
 
@@ -39,7 +37,9 @@ The project demonstrates the complete data pipeline from web scraping to interac
 | **Year Slider** | Navigate through time (1997–2025) |
 | **Play Button** | Auto-play timeline animation |
 | **Reset Button** | Jump to 1997 (beginning of timeline) |
-| **Reset View Button** | Return camera to default position |
+| **Reset View Button** | Return camera to default position + restore original film order |
+| **Sort by Year** | Arrange films chronologically (oldest near center) |
+| **Sort by Box Office** | Arrange by earnings (highest near center) |
 | **Mouse Drag** | Rotate the 3D galaxy |
 | **Hover** | Display film title and box office |
 | **Double-click** | Open detailed film information |
@@ -137,7 +137,7 @@ Wikipedia → Web Scraping → CSV → SQLite → JSON → 3D Visualization
 
 3. **Run the Jupyter Notebook:**
    ```bash
-   jupyter notebook DWV_as1.ipynb
+   jupyter notebook Scraping_wiki.ipynb
    ```
    Execute all cells to scrape data and generate `films.json`
 
@@ -169,6 +169,9 @@ Wikipedia → Web Scraping → CSV → SQLite → JSON → 3D Visualization
 | **Click PLAY** | Auto-play timeline animation |
 | **Click film in "Now Playing"** | View film details |
 | **Click ADD TO COMPARISON** | Add film to comparison panel |
+| **Click Sort by Year** | Reorder galaxy chronologically |
+| **Click Sort by Box Office** | Reorder by earnings |
+| **Click Reset View** | Reset camera + restore original order |
 
 ### Film Comparison
 
@@ -241,9 +244,6 @@ The site is hosted on **GitHub Pages**:
 
 ---
 
-
-
-
 ## 🙏 Acknowledgments
 
 - Data source: [Wikipedia](https://en.wikipedia.org/wiki/List_of_highest-grossing_films)
@@ -251,9 +251,6 @@ The site is hosted on **GitHub Pages**:
 - Charts: [Chart.js](https://www.chartjs.org/)
 - Fonts: [Google Fonts - Inter](https://fonts.google.com/specimen/Inter)
 
-
-
 ---
 
 **Enjoy exploring the Cinema Galaxy! 🌟🎬**
-
