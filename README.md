@@ -1,7 +1,12 @@
+# 🎬 Cinema Galaxy - 3D Interactive Film Timeline
+
+
+
+
 <img width="795" height="692" alt="image" src="https://github.com/user-attachments/assets/3f939505-497d-4bbf-a7b0-25b69c006545" />
 
 
-# 🎬 Cinema Galaxy - 3D Interactive Film Timeline
+
 
 An interactive 3D visualization of the highest-grossing films (1997–2025) presented as a star galaxy. Explore film data through an immersive 3D space, compare box office earnings, and travel through cinematic history with an interactive timeline.
 
