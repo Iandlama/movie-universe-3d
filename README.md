@@ -195,7 +195,7 @@ movie-universe-3d/
 ├── styles.css              # All CSS styles
 ├── script.js               # JavaScript logic (3D, UI, comparison)
 ├── films.json              # Film data from Wikipedia
-├── DWV_as1.ipynb           # Jupyter Notebook with web scraping code
+├── Scraping_wiki.ipynb     # Jupyter Notebook with web scraping code
 ├── films.csv               # Raw scraped data (optional)
 ├── films.db                # SQLite database (optional)
 └── README.md               # This file
